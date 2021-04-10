@@ -325,10 +325,11 @@ void Init()
 		// and do the same that in case 1
 	case 1:
 		*(BYTE*)_bIsDragRace = 1;
-		// do not call function there
+		// do not call functions there
 		injector::MakeNOP(0x538391, 5, true);
+		injector::MakeNOP(0x537F37, 5, true);
+		injector::MakeNOP(0x538610, 3, true);
 		break;
-
 
 	case 3:
 		// blow engine
