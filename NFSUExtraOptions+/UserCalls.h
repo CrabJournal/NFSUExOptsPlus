@@ -91,7 +91,7 @@ R MakeUserCall(R _func, int _numArgs, ...)
 
 	// get stack difference
 	int _stack = _pushArgs.size() * 4;
-
+	
 	// move args to the register struct
 	for (FuncArg i : _args)
 	{
@@ -101,6 +101,9 @@ R MakeUserCall(R _func, int _numArgs, ...)
 	// push args in reverse order
 	reverse(_pushArgs.begin(), _pushArgs.end());
 
+	DWORD esp_target;
+	_asm mov [esp_target], esp
+	
 	for (FuncArg s : _pushArgs)
 	{
 		_asm push s.val;
@@ -118,7 +121,7 @@ R MakeUserCall(R _func, int _numArgs, ...)
 
 		// invoke the call
 		call _func;
-		add esp, _stack;
+		mov esp, [esp_target]
 		mov _retval, eax;
 	}
 
