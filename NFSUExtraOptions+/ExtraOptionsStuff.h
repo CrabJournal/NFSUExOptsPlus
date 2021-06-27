@@ -303,9 +303,6 @@ void Init()
 
 	// Other Things
 	injector::MakeCALL(0x4479BE, Thing, true);
-
-	// Set virtual function hook 
-	injector::WriteMemory<void*>(0x6B9670 /* .rdata */, HookSpeed, true);
 	
 	if (DriftPhysicsInAnyMode)
 		injector::MakeNOP(0x57F347, 6, true);
