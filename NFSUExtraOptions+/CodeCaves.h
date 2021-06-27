@@ -3,9 +3,8 @@
 #include "..\includes\injector\injector.hpp"
 #include "..\includes\IniReader.h"
 
-char* TakeoverString = "NFSU Extra Options+ - © 2021 ExOpts Team & Crab Gazette.";
+char* TakeoverString = "NFSU Extra Options+ - Â© 2021 ExOpts Team & Crab Gazette.";
 bool ShouldShowLapPopup;
-void* vector3playerspeed = nullptr;
 
 // 0x4DF385
 void __declspec(naked) SplashScreenCodeCave()
@@ -278,21 +277,5 @@ void __declspec(naked) SkipMovieCodeCave()
 		loc_5A4A5D:
 			push 0x5A4A5D
 			retn
-	}
-}
-
-// not a cave but...
-void __declspec(naked) HookSpeed()
-{
-	_asm
-	{
-		// check ret address
-		// didn't found better way yet
-		cmp dword ptr[esp + 0x2F0], 0x42036E
-		jne skip
-		mov [vector3playerspeed], ecx
-			skip :
-		push 0x585810
-			ret
 	}
 }
