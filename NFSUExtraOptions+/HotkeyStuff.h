@@ -134,12 +134,10 @@ void Thing()
 		}
 	}
 
-	if ((GetAsyncKeyState(hotkeyJump) & 1) && vector3playerspeed != nullptr && (TheGameFlowManager == 6) && IsOnFocus)
+	if ((GetAsyncKeyState(hotkeyJump) & 1) && (TheGameFlowManager == 6) && IsOnFocus)
 	{
-		// sometimes it's not PLAYER speed
-		*(float*)((BYTE*)vector3playerspeed + 0x78) += JumpSpeed; // add to speed.z
+		*(*(*(*(*(float*****)_pCurrentWorld + 10) + 13) + 5) + 29) += JumpSpeed; // add to speed.z
 	}
-	vector3playerspeed = nullptr;
 
 	if (mpsInsteadOfMiPH)
 	{
