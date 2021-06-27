@@ -30,3 +30,11 @@
 #define _PlayersByNumber 0x7361B4
 #define _pCurrentRace 0x73619C
 #define _Camera_StopUpdating 0x735F5C
+#define _pCurrentWorld 0x7361F8
+
+enum InputMode :DWORD {
+	IM_menu = 1,
+	IM_game = 2,
+	//...
+	IM_unk_mb_last = 8
+};
