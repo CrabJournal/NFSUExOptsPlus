@@ -100,6 +100,7 @@ void Thing()
 			else
 			{
 				MakeUserCall(Player_AutoPilotOff, 1, edi, PlayerThing);
+				MakeUserCall(SetInputMode, 2, eax, *(void**)_PlayersByIndex, esp, InputMode::IM_game);
 			}
 		}
 	}
