@@ -3,7 +3,7 @@
 #include "..\includes\injector\injector.hpp"
 #include "..\includes\IniReader.h"
 
-char* TakeoverString = "NFSU Extra Options+ - Â© 2021 ExOpts Team & Crab Gazette.";
+char* TakeoverString = "NFSU Extra Options+ - © 2021 ExOpts Team & Crab Gazette.";
 bool ShouldShowLapPopup;
 
 // 0x4DF385
@@ -266,11 +266,11 @@ void __declspec(naked) SkipMovieCodeCave()
 {
 	_asm
 	{
-		mov eax, [_SkipMovies]
+		mov eax, [_SkipMovies] // ahahah, check diasm code
 		test eax, eax
 		jz loc_5A4A5D
 		push 0xC3960EB9
-		mov edx, _gFEPackageManager
+		mov edx, ds: [_pgFEPackageManager]
 		call FEPackageManager_BroadcastMessage
 		retn
 

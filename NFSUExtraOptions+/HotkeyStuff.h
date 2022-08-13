@@ -6,6 +6,8 @@
 bool once3, IsOnFocus, AutoDrive;
 DWORD TheGameFlowManager;
 HWND windowHandle;
+int m_count = 0;
+int t_count = 0;
 
 void Thing()
 {
@@ -95,6 +97,7 @@ void Thing()
 		{
 			if (AutoDrive)
 			{
+				//SaveNode();
 				Player_AutoPilotOn((DWORD*)PlayerThing);
 			}
 			else
@@ -108,7 +111,12 @@ void Thing()
 	// Freeze Camera
 	if ((GetAsyncKeyState(hotkeyFreezeCamera) & 1) && IsOnFocus)
 	{
-		*(bool*)_Camera_StopUpdating = !(*(bool*)_Camera_StopUpdating);
+		static void** const pCubicCameraMover_Update = (void**)0x6C7E5C;
+		static void* SwapAddr = (void*)0x40A880; // ret
+
+		void* t = *pCubicCameraMover_Update;
+		injector::WriteMemory<void*>(pCubicCameraMover_Update, SwapAddr, true);
+		SwapAddr = t;
 	}
 
 	// Unlock All Things
@@ -120,7 +128,6 @@ void Thing()
 
 		injector::WriteMemory<unsigned char>(_UnlockEverythingThatCanBeLocked, UnlockAllThings, true);
 	}
-	
 	
 	if ((GetAsyncKeyState(hotkeyNoGravity) & 1) && (TheGameFlowManager == 6) && IsOnFocus)
 	{
@@ -137,7 +144,8 @@ void Thing()
 
 	if ((GetAsyncKeyState(hotkeyJump) & 1) && (TheGameFlowManager == 6) && IsOnFocus)
 	{
-		*(*(*(*(*(float*****)_pCurrentWorld + 10) + 13) + 5) + 29) += JumpSpeed; // add to speed.z
+		// *(*(*(*(*(float*****)_pCurrentWorld + 10) + 13) + 5) + 29) += JumpSpeed; // add to speed.z
+		((float*****)_pCurrentWorld)[0][10][13][5][29] += JumpSpeed;
 	}
 
 	if (mpsInsteadOfMiPH)
@@ -146,7 +154,7 @@ void Thing()
 		injector::WriteMemory<DWORD>(0x6CC9F0, 0x3f800000, true);
 		injector::WriteMemory<DWORD>(0x6CC8B0, 0x41d80000, true);
 		
-		*(DWORD*)MPH = *(DWORD*)"m/s";
+		*(DWORD*)MPH = '\0s/m';
 		mpsInsteadOfMiPH = false;
 	}
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#define _CurrentRaceMode 0x777CC8
+#define _CurrentRaceMode (*(void**)0x43B0BB)
 
 int __fastcall QROptionsScreen_DrawNumRacers(DWORD* QROptionsScreen, void* EDX_Unused)
 {

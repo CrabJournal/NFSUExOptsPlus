@@ -7,6 +7,8 @@
 #include "InGameFunctions.h"
 #include "UserCalls.h"
 
+
+
 int hotkeyUnlockAllThings, hotkeyAnyTrackInAnyMode, hotkeyFreezeCamera, hotkeyAutoDrive, hotkeyNoGravity, hotkeyJump;
 int GameRegion, EATraxSkin, WindowedMode, WindowedModeX, WindowedModeY;
 int StartingCash, StartingStylePoints, MinLaps, MaxLaps, MinRacers, MaxRacers, DragInAnyMode;
@@ -29,7 +31,7 @@ void ReadConfig()
 
 	// Hotkeys
 	hotkeyJump = iniReader.ReadInteger("Hotkeys", "Jump", 49); // 1
-	hotkeyNoGravity = iniReader.ReadInteger("Hotkeys", "NoGravity", 118); // F7
+	hotkeyNoGravity = iniReader.ReadInteger("Hotkeys", "NoGravity", 50); // 50
 	hotkeyAnyTrackInAnyMode = iniReader.ReadInteger("Hotkeys", "AnyTrackInAnyMode", 36); // HOME
 	hotkeyFreezeCamera = iniReader.ReadInteger("Hotkeys", "FreezeCamera", 19); // Pause/Break
 	hotkeyUnlockAllThings = iniReader.ReadInteger("Hotkeys", "UnlockAllThings", 116); //F5
@@ -86,9 +88,18 @@ void ReadConfig()
 	AllowMultipleInstances = iniReader.ReadInteger("Misc", "AllowMultipleInstances", 0) == 1;
 }
 
+// #include "FromGame.h"
+
+//void* _stdcall CreateGameMainMenuScreen_Hook(ScreenConstructorData* ScreenConstructorData) {
+//	ScreenConstructorData->FEpkg->mbMenuOpts = 0;
+//	return CreateGameMainMenuScreen(ScreenConstructorData);
+//}
+
 void Init()
 {
 	ReadConfig();
+
+	//*(void**)0x6F9E50 = CreateGameMainMenuScreen_Hook;
 
 	// Restrictions
 	MinLaps %= 128;
@@ -222,7 +233,7 @@ void Init()
 	{
 		injector::MakeJMP(0x4DF385, SplashScreenCodeCave, true);
 	}
-	
+
 	// Fix Invisible Wheels
 	if (WheelFix)
 	{
@@ -234,7 +245,7 @@ void Init()
 	{
 		injector::WriteMemory<BYTE>(0x465DA4, 0xEB, true); // Collision::CheckForWildCollision
 	}
-	
+
 	// Garage Hacks
 	if (GarageZoom)
 	{
@@ -297,13 +308,16 @@ void Init()
 		injector::WriteMemory<BYTE>(_SkipMovies, 1, true); // Vanilla Skip Movies
 		injector::MakeJMP(0x5A4A50, SkipMovieCodeCave, true); // MovieStart (fix blank screen when skipped a movie)
 	}
-	
+
 	if (!EnableSound) injector::WriteMemory<BYTE>(_IsSoundEnabled, 0, true); // Enable sound
 	if (!EnableMusic) injector::WriteMemory<BYTE>(_IsAudioStreamingEnabled, 0, true); // Enable music
 
+	const int call_UpdateCameraMovers = 0x4479BE;
+	UpdateCameraMovers = (void(*)())(*(int*)(call_UpdateCameraMovers + 1) + call_UpdateCameraMovers + 5);
 	// Other Things
-	injector::MakeCALL(0x4479BE, Thing, true);
-	
+	injector::MakeCALL(call_UpdateCameraMovers, Thing, true);
+
+
 	if (DriftPhysicsInAnyMode)
 		injector::MakeNOP(0x57F347, 6, true);
 
@@ -322,10 +336,11 @@ void Init()
 		// and do the same that in case 1
 	case 1:
 		*(BYTE*)_bIsDragRace = 1;
-		// do not call function there
-		injector::MakeNOP(0x538391, 5, true);
+		// do not call functions there
+		injector::MakeNOP(0x538391, 5);
+		injector::MakeNOP(0x537F37, 5);
+		injector::MakeNOP(0x538610, 3);
 		break;
-
 
 	case 3:
 		// blow engine

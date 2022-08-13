@@ -88,6 +88,8 @@
       <CompileAsManaged>
       </CompileAsManaged>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -99,10 +101,12 @@
   <ItemGroup>
     <ClInclude Include="CodeCaves.h" />
     <ClInclude Include="ExtraOptionsStuff.h" />
+    <ClInclude Include="FromGame.h" />
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="HotkeyStuff.h" />
     <ClInclude Include="InGameFunctions.h" />
     <ClInclude Include="PreRaceStatsScreen.h" />
+    <ClInclude Include="R_math.h" />
     <ClInclude Include="UserCalls.h" />
     <ClInclude Include="QROptionsScreen.h" />
     <ClInclude Include="resource.h" />

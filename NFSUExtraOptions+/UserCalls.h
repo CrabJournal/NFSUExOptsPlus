@@ -35,7 +35,6 @@ typedef struct
  * 
  * Usage: After number of arguments, you need to push the register name (eax, ebx, etc.) and the argument itself.
  * If argument is pushed regularly, use "esp" as the register name.
- * Stack difference will get calculated by the function automatically.
  * 
  * For example: MakeUserCall<int>(FEngPrintf, 3, eax, FEPkg, edx, buf, esp, str);
  *		<int>			// It's int by default. Don't use "<void>" in here as it will give you a compile-time error.
@@ -89,9 +88,6 @@ R MakeUserCall(R _func, int _numArgs, ...)
 
 	va_end(ap);
 
-	// get stack difference
-	int _stack = _pushArgs.size() * 4;
-	
 	// move args to the register struct
 	for (FuncArg i : _args)
 	{
@@ -103,7 +99,7 @@ R MakeUserCall(R _func, int _numArgs, ...)
 
 	DWORD esp_target;
 	_asm mov [esp_target], esp
-	
+
 	for (FuncArg s : _pushArgs)
 	{
 		_asm push s.val;

@@ -11,9 +11,16 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD reason, LPVOID /*lpReserved*/)
 		uintptr_t base = (uintptr_t)GetModuleHandleA(NULL);
 		IMAGE_DOS_HEADER* dos = (IMAGE_DOS_HEADER*)(base);
 		IMAGE_NT_HEADERS* nt = (IMAGE_NT_HEADERS*)(base + dos->e_lfanew);
+		// Check if .exe file is compatible - Thanks to thelink2012 and MWisBest
+		if ((base + nt->OptionalHeader.AddressOfEntryPoint + (0x400000 - base)) == 0x670CB5) {
+			//if (*(char*)0x4173C7 == 0x4C)
+				Init();
+			/*else {
+				MessageBoxA(NULL, "EU exe file not supported", "NFSU Extra Options", MB_ICONERROR);
+				return FALSE;
+			}*/
+		}
 
-		if ((base + nt->OptionalHeader.AddressOfEntryPoint + (0x400000 - base)) == 0x670CB5) // Check if .exe file is compatible - Thanks to thelink2012 and MWisBest
-			Init();
 
 		else
 		{

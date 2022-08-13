@@ -23,6 +23,7 @@ int(__fastcall* cFrontendDatabase_GetOptions)(DWORD* cFrontendDatabase, int eRac
 int(__cdecl* FEngSetVisible_obj)(void* FEObject) = (int(__cdecl*)(void*))0x4F6970;
 int(__stdcall* RaceCoordinator_RCPostMessage)(DWORD* RaceCoordinator, int RCMessage, int unk) = (int(__stdcall*)(DWORD*, int, int))0x421C00;
 char* (__fastcall* GetString)(int crap, DWORD code) = (char*(__fastcall*)(int, DWORD))0x59FB80;
+void* (__stdcall* CreateGameMainMenuScreen)(void* ScreenConstructorData) = (void*(__stdcall*)(void*))0x4B2B70;
 
 // Functions which has odd calling conventions (using NFSUCalls.h to wrap them)
 int(*Player_AutoPilotOff)(DWORD* EDI_Player) = (int(*)(DWORD*))0x42E400;
